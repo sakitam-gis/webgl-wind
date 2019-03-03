@@ -1,0 +1,40 @@
+{
+  "name": "webgl-wind",
+  "version": "0.0.1",
+  "description": "Wind power visualization with WebGL particles",
+  "author": "sakitam-fdd <smilefdd@gmail.com>",
+  "homepage": "https://github.com/sakitam-gis/webgl-wind/packages/core",
+  "private": false,
+  "main": "dist/webgl-wind.common.js",
+  "module": "dist/webgl-wind.esm.js",
+  "unpkg": "dist/webgl-wind.js",
+  "namespace": "WindGL",
+  "types": "types/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sakitam-gis/webgl-wind/packages/core"
+  },
+  "bugs": {
+    "url": "https://github.com/sakitam-gis/webgl-wind/issues"
+  },
+  "keywords": [
+    "webgl",
+    "canvas",
+    "es6",
+    "javascript",
+    "typescript",
+    "wind",
+    "map"
+  ],
+  "scripts": {
+    "dev": "rollup -wm -c build/rollup-dev-config.js",
+    "build": "node build/rollup-prod-config.js"
+  },
+  "peerDependencies": {},
+  "devDependencies": {},
+  "engines": {
+    "node": ">= 4.0.0",
+    "npm": ">= 3.0.0"
+  },
+  "license": "MIT"
+}

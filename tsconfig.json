@@ -1,0 +1,37 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "strictNullChecks": true,
+    "moduleResolution": "node",
+    "experimentalDecorators": true,
+    "jsx": "react",
+    "noUnusedParameters": true,
+    "noUnusedLocals": true,
+    "noImplicitAny": true,
+    "declaration": true,
+    "allowSyntheticDefaultImports": true,
+    "outDir": "lib",
+    "module": "commonjs",
+    "sourceMap": true,
+    "rootDirs": [
+      "website"
+    ],
+    "removeComments": true,
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitReturns": true,
+    "strict": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "target": "es5",
+    "lib": [
+      "es5",
+      "dom"
+    ]
+  },
+  "include": [
+    "website"
+  ],
+  "exclude": [
+    "node_modules",
+    "src/**/*"
+  ]
+}
