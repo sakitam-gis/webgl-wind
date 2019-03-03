@@ -70,10 +70,22 @@ const styleLoaders = function (options) {
   return output;
 };
 
+const createLintingRule = () => ({
+  test: /\.(js|vue)$/,
+  loader: 'eslint-loader',
+  enforce: 'pre',
+  include: [resolve('packages'), resolve('test')],
+  options: {
+    formatter: require('eslint-friendly-formatter'),
+    emitWarning: false
+  }
+});
+
 module.exports = {
   _package,
   resolve,
   assetsPath,
   cssLoaders,
-  styleLoaders
+  styleLoaders,
+  createLintingRule
 };

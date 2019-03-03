@@ -13,39 +13,21 @@ module.exports = {
     libraryTarget: 'var'
   },
   resolve: {
+    modules: [utils.resolve('node_modules')],
     extensions: [
-      '.web.tsx',
-      '.web.ts',
-      '.web.jsx',
-      '.web.js',
-      '.ts',
-      '.tsx',
-      '.js',
-      '.jsx',
+      '.web.tsx', '.web.ts', '.web.jsx', '.web.js',
+      '.ts', '.tsx', '.js', '.jsx',
       '.json'
     ]
   },
   module: {
     rules: [
-      {
-        test: /\.(js|jsx)$/,
-        loader: 'eslint-loader',
-        enforce: 'pre',
-        include: [
-          utils.resolve('src'),
-          utils.resolve('website')
-        ],
-        options: {
-          formatter: require('eslint-friendly-formatter'),
-          emitWarning: false
-        }
-      },
+      ...(process.env.USEESLINT ? [utils.createLintingRule()] : []),
       {
         test: /\.(js|jsx)$/,
         loader: 'babel-loader',
         include: [
-          utils.resolve('src'),
-          utils.resolve('website'),
+          utils.resolve('packages'),
           utils.resolve('node_modules/webpack-dev-server/client')
         ],
       },
@@ -53,8 +35,7 @@ module.exports = {
         test: /\.tsx?$/,
         loader: 'ts-loader',
         include: [
-          utils.resolve('website'),
-          utils.resolve('test'),
+          utils.resolve('packages'),
         ]
       },
       {

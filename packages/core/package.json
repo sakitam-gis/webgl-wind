@@ -27,8 +27,8 @@
     "map"
   ],
   "scripts": {
-    "dev": "rollup -wm -c build/rollup-dev-config.js",
-    "build": "node build/rollup-prod-config.js"
+    "dev": "webpack-dev-server --inline --progress --config webpack.config.js",
+    "build": "webpack --config webpack.config.js"
   },
   "peerDependencies": {},
   "devDependencies": {},

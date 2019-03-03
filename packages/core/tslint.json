@@ -1,6 +1,5 @@
 {
   "extends": [
-    "tslint-react",
     "tslint-config-airbnb"
   ],
   "rules": {
@@ -80,8 +79,7 @@
     ],
     "quotemark": [
       true,
-      "single",
-      "jsx-double"
+      "single"
     ],
     "radix": true,
     "semicolon": [
@@ -135,17 +133,12 @@
       "check-separator",
       "check-type",
       "check-typecast"
-    ],
-    "jsx-no-lambda": false,
-    "jsx-no-string-ref": false,
-    "jsx-boolean-value": [true, "never"],
-    "jsx-wrap-multiline": false
+    ]
   },
   "include": [
-    "website"
+    "src/**/*"
   ],
   "exclude": [
-    "node_modules",
-    "src/**/*"
+    "node_modules"
   ]
 }
