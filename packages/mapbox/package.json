@@ -1,0 +1,44 @@
+{
+  "name": "@sakitam-gis/mapbox-windgl",
+  "version": "0.0.1",
+  "description": "Wind power visualization with mapbox-gl",
+  "author": "sakitam-fdd <smilefdd@gmail.com>",
+  "homepage": "https://github.com/sakitam-gis/webgl-wind/packages/mapbox",
+  "private": false,
+  "main": "dist/mapbox-windgl.common.js",
+  "module": "dist/mapbox-windgl.esm.js",
+  "unpkg": "dist/mapbox-windgl.js",
+  "namespace": "WindGL",
+  "types": "types/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sakitam-gis/webgl-wind/packages/mapbox"
+  },
+  "bugs": {
+    "url": "https://github.com/sakitam-gis/webgl-wind/issues"
+  },
+  "keywords": [
+    "webgl",
+    "canvas",
+    "es6",
+    "javascript",
+    "typescript",
+    "wind",
+    "mapbox"
+  ],
+  "scripts": {
+    "dev": "cross-env LIB_ENV=development webpack --config webpack.config.js",
+    "build": "cross-env LIB_ENV=production webpack --config webpack.config.js"
+  },
+  "peerDependencies": {
+    "mapbox-gl": "^0.53.1"
+  },
+  "devDependencies": {
+    "mapbox-gl": "^0.53.1"
+  },
+  "engines": {
+    "node": ">= 4.0.0",
+    "npm": ">= 3.0.0"
+  },
+  "license": "MIT"
+}
