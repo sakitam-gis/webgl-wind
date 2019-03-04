@@ -81,11 +81,33 @@ const createLintingRule = () => ({
   }
 });
 
+/**
+ * handle min file
+ * @param name
+ * @returns {string}
+ */
+const handleMinEsm = name => {
+  if (typeof name === 'string') {
+    let arr_ = name.split('.')
+    let arrTemp = []
+    arr_.forEach((item, index) => {
+      if (index < arr_.length - 1) {
+        arrTemp.push(item)
+      } else {
+        arrTemp.push('min')
+        arrTemp.push(item)
+      }
+    })
+    return arrTemp.join('.')
+  }
+};
+
 module.exports = {
   _package,
   resolve,
   assetsPath,
   cssLoaders,
   styleLoaders,
+  handleMinEsm,
   createLintingRule
 };

@@ -8,7 +8,7 @@ module.exports = {
       modules: false,
     }],
     '@babel/preset-typescript',
-    // '@babel/preset-react',
+    '@babel/preset-react',
   ],
   plugins: [
     [
@@ -16,7 +16,7 @@ module.exports = {
       { loose: true },
     ],
     '@babel/external-helpers',
-    // 'react-hot-loader/babel',
+    'react-hot-loader/babel',
   ],
   ignore: [
     'dist/*.js',

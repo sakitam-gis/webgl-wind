@@ -8,15 +8,18 @@ const utils = require('../../build/helper');
 const baseConfig = require('../../build/webpack.base.conf');
 const pkg = require('./package');
 
+const env = process.env.LIB_ENV;
+
 const webpackConfig = merge(baseConfig, {
-  mode: 'production',
+  mode: env,
   entry: {
     app: utils.resolve('packages/core/src/index.ts')
   },
-  devtool: false,
+  devtool: 'source-map', // cheap-module-eval-source-map
+  watch: env === 'development',
   output: {
-    path: utils.resolve('packages/core/dist'),
-    filename: pkg.unpkg,
+    path: utils.resolve('packages/core/'),
+    filename: env === 'development' ? pkg.unpkg : utils.handleMinEsm(pkg.unpkg),
     publicPath: utils.resolve('packages/core/'),
     library: pkg.namespace,
     libraryTarget: 'umd2',
@@ -38,26 +41,29 @@ const webpackConfig = merge(baseConfig, {
     ]
   },
   plugins: [
-    new CleanWebpackPlugin([
-      'dist',
-      'types'
-    ], {
-      root: path.resolve(__dirname, './')
-    }),
-    new ParallelUglifyPlugin({
-      // cacheDir: path.join(__dirname, './cache/'),
-      sourceMap: true,
-      uglifyES: {
-        output: {
-          comments: false
-        },
-        compress: {
-          inline: 1, // https://github.com/mishoo/UglifyJS2/issues/2842
-          warnings: false,
-          drop_console: true
+    ...(env === 'development' ? [
+      new CleanWebpackPlugin([
+        'dist',
+        'types',
+        'lib'
+      ], {
+        root: path.resolve(__dirname, './')
+      }),
+      new ParallelUglifyPlugin({
+        // cacheDir: path.join(__dirname, './cache/'),
+        sourceMap: true,
+        uglifyES: {
+          output: {
+            comments: false
+          },
+          compress: {
+            inline: 1, // https://github.com/mishoo/UglifyJS2/issues/2842
+            warnings: false,
+            drop_console: true
+          }
         }
-      }
-    }),
+      })
+    ] : [])
   ]
 });
 

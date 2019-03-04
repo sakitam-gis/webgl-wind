@@ -34,7 +34,17 @@
     "precommit": "lint-staged"
   },
   "dependencies": {
-    "@mapbox/gl-matrix": "^0.0.1"
+    "@mapbox/gl-matrix": "^0.0.1",
+    "@types/lodash": "^4.14.121",
+    "@types/react": "^16.8.6",
+    "@types/react-dom": "^16.8.2",
+    "@types/react-hot-loader": "^4.1.0",
+    "@types/react-router-dom": "^4.3.1",
+    "react": "^16.8.3",
+    "react-dom": "^16.8.3",
+    "react-hot-loader": "^4.7.2",
+    "react-router": "^4.3.1",
+    "react-router-dom": "^4.3.1"
   },
   "devDependencies": {
     "@babel/core": "^7.3.4",
@@ -43,6 +53,7 @@
     "@babel/plugin-syntax-dynamic-import": "^7.2.0",
     "@babel/plugin-transform-proto-to-assign": "^7.2.0",
     "@babel/preset-env": "^7.3.4",
+    "@babel/preset-react": "^7.0.0",
     "@babel/preset-typescript": "^7.3.3",
     "@babel/types": "^7.3.4",
     "@types/node": "^10.12.18",

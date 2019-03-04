@@ -1,5 +1,5 @@
 {
-  "name": "webgl-wind",
+  "name": "@sakitam-gis/webgl-wind",
   "version": "0.0.1",
   "description": "Wind power visualization with WebGL particles",
   "author": "sakitam-fdd <smilefdd@gmail.com>",
@@ -27,8 +27,8 @@
     "map"
   ],
   "scripts": {
-    "dev": "webpack-dev-server --inline --progress --config webpack.config.js",
-    "build": "webpack --config webpack.config.js"
+    "dev": "cross-env LIB_ENV=development webpack --config webpack.config.js",
+    "build": "cross-env LIB_ENV=production webpack --config webpack.config.js"
   },
   "peerDependencies": {},
   "devDependencies": {},

@@ -4,6 +4,7 @@
     "strictNullChecks": true,
     "moduleResolution": "node",
     "experimentalDecorators": true,
+    "jsx": "react",
     "noUnusedParameters": true,
     "noUnusedLocals": true,
     "noImplicitAny": true,
@@ -13,7 +14,7 @@
     "module": "commonjs",
     "sourceMap": true,
     "rootDirs": [
-      "src"
+      "website"
     ],
     "removeComments": true,
     "forceConsistentCasingInFileNames": true,
@@ -28,7 +29,7 @@
     ]
   },
   "include": [
-    "src/**/*"
+    "website"
   ],
   "exclude": [
     "node_modules"
