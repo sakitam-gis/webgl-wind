@@ -31,7 +31,10 @@
     "clean": "lerna clean",
     "bootstrap": "lerna bootstrap",
     "publish-packages": "lerna publish --force-publish",
-    "precommit": "lint-staged"
+    "precommit": "lint-staged",
+    "website": "webpack-dev-server --inline --config build/webpack.preview.conf.js",
+    "generate": "webpack --config build/webpack.generate.conf.js",
+    "deploy": "gh-pages -d _site"
   },
   "dependencies": {
     "@mapbox/gl-matrix": "^0.0.1",

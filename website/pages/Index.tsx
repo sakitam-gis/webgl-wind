@@ -26,7 +26,9 @@ class Index extends React.Component <Props, Context> {
     });
   }
 
-  handleClick = (event: any, type: string, item: any) => {
+  handleClick = (event: Event, type: string, item: {
+    url?: string;
+  }) => {
     if (event.preventDefault) {
       event.preventDefault();
     } else {
@@ -36,7 +38,7 @@ class Index extends React.Component <Props, Context> {
       window.open(item.url);
     } else {
     }
-  }
+  };
 
   /**
    * 获取示例列表
