@@ -5,5 +5,12 @@
     "chart_name": "native",
     "chart_author": "sakitam-fdd",
     "chart_time": "2019.03.04"
+  },
+  {
+    "imgSrc": "./static/images/building.gif",
+    "link": "/mapbox",
+    "chart_name": "mapbox",
+    "chart_author": "sakitam-fdd",
+    "chart_time": "2019.03.05"
   }
 ]

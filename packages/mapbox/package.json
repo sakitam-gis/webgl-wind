@@ -5,10 +5,10 @@
   "author": "sakitam-fdd <smilefdd@gmail.com>",
   "homepage": "https://github.com/sakitam-gis/webgl-wind/packages/mapbox",
   "private": false,
-  "main": "dist/mapbox-windgl.common.js",
-  "module": "dist/mapbox-windgl.esm.js",
+  "main": "dist/mapbox-windgl.js",
+  "module": "dist/mapbox-windgl.js",
   "unpkg": "dist/mapbox-windgl.js",
-  "namespace": "WindGL",
+  "namespace": "MapBoxWindGL",
   "types": "types/index.d.ts",
   "repository": {
     "type": "git",
@@ -29,6 +29,9 @@
   "scripts": {
     "dev": "cross-env LIB_ENV=development webpack --config webpack.config.js",
     "build": "cross-env LIB_ENV=production webpack --config webpack.config.js"
+  },
+  "dependencies": {
+    "@sakitam-gis/webgl-wind": "^0.0.1"
   },
   "peerDependencies": {
     "mapbox-gl": "^0.53.1"

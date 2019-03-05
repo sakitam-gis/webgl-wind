@@ -3,6 +3,7 @@ import * as React from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import Index from '../pages/Index';
 import Native from '../pages/Native';
+import MapBox from '../pages/MapBox';
 
 const mainRouter = [
   {
@@ -19,6 +20,14 @@ const mainRouter = [
     route: {
       path: '/native',
       component: Native,
+    },
+  },
+  {
+    name: 'mapbox',
+    key: 'mapbox',
+    route: {
+      path: '/mapbox',
+      component: MapBox,
     },
   },
 ];
