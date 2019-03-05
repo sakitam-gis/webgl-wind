@@ -1,12 +1,15 @@
 'use strict'
-const path = require('path')
-const webpack = require('webpack')
-const ParallelUglifyPlugin = require('webpack-parallel-uglify-plugin')
+const path = require('path');
+const webpack = require('webpack');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+const ParallelUglifyPlugin = require('webpack-parallel-uglify-plugin');
 
 module.exports = {
   entry: {
     extlib: [
-      'react'
+      'react',
+      'react-dom',
+      'react-router-dom'
     ]
   },
   output: {
@@ -15,6 +18,11 @@ module.exports = {
     library: '[name]'
   },
   plugins: [
+    new CleanWebpackPlugin([
+      'dll'
+    ], {
+      root: path.resolve(__dirname, '../')
+    }),
     new webpack.DllPlugin({
       path: path.join(__dirname, '../dll', '[name]-manifest.json'),
       name: '[name]'
@@ -32,4 +40,4 @@ module.exports = {
       }
     })
   ]
-}
+};

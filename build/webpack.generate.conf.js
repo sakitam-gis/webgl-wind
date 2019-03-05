@@ -7,6 +7,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('mini-css-extract-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+// const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin');
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin');
 const ParallelUglifyPlugin = require('webpack-parallel-uglify-plugin');
 
@@ -34,15 +35,13 @@ const webpackConfig = merge(require('./webpack.base.conf'), {
   },
   plugins: [
     new CleanWebpackPlugin([
-      'dist',
-      'types',
-      'lib'
+      '_site'
     ], {
-      root: path.resolve(__dirname, './')
+      root: path.resolve(__dirname, '../')
     }),
-    new webpack.DllReferencePlugin({
-      manifest: require('../dll/extlib-manifest.json')
-    }),
+    // new webpack.DllReferencePlugin({
+    //   manifest: require('../dll/extlib-manifest.json')
+    // }),
     new ParallelUglifyPlugin({
       cacheDir: path.join(__dirname, '../cache/'),
       sourceMap: false,
@@ -95,6 +94,13 @@ const webpackConfig = merge(require('./webpack.base.conf'), {
     // keep module.id stable when vendor modules does not change
     new webpack.HashedModuleIdsPlugin(),
     new webpack.optimize.ModuleConcatenationPlugin(),
+
+    // new AddAssetHtmlPlugin({
+    //   filepath: path.resolve(__dirname, '../dll/extlib.dll.*.js'),
+    //   publicPath: utils.resolve('_site/static/scripts'),
+    //   outputPath: utils.resolve('_site/static/scripts'),
+    //   includeSourcemap: false
+    // }),
 
     // copy custom static assets
     new CopyWebpackPlugin([
