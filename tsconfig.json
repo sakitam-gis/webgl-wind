@@ -6,6 +6,7 @@
       ]
     },
     "baseUrl": ".",
+    "esModuleInterop": true,
     "strictNullChecks": true,
     "moduleResolution": "node",
     "experimentalDecorators": true,
@@ -35,8 +36,5 @@
   },
   "include": [
     "website"
-  ],
-  "exclude": [
-    "node_modules"
   ]
 }

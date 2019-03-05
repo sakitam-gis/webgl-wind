@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { HashRouter as Router } from 'react-router-dom';
-import { AppContainer } from 'react-hot-loader';
+// import { AppContainer } from 'react-hot-loader';
 import routes from './routes/index';
 
 const env = process.env.NODE_ENV || 'development';
@@ -19,9 +19,7 @@ if (env === 'development') {
   window.onload = function () {
     const render = (Component: any) => {
       ReactDOM.render(
-        <AppContainer>
-          <Component />
-        </AppContainer>,
+        <Component />,
         document.getElementById('app')
       );
     };

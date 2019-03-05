@@ -4,7 +4,7 @@
   "description": "Wind power visualization with WebGL particles",
   "author": "sakitam-fdd <smilefdd@gmail.com>",
   "homepage": "http://sakitam-gis.cn/webgl-wind",
-  "license": "MIT",
+  "license": "BSD 3-clause",
   "private": true,
   "workspaces": [
     "packages/*"
@@ -43,11 +43,13 @@
     "@types/react-dom": "^16.8.2",
     "@types/react-hot-loader": "^4.1.0",
     "@types/react-router-dom": "^4.3.1",
+    "@types/dat.gui": "^0.7.2",
     "react": "^16.8.3",
     "react-dom": "^16.8.3",
     "react-hot-loader": "^4.7.2",
     "react-router": "^4.3.1",
-    "react-router-dom": "^4.3.1"
+    "react-router-dom": "^4.3.1",
+    "dat.gui": "^0.7.5"
   },
   "devDependencies": {
     "@babel/core": "^7.3.4",
