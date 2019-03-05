@@ -43,8 +43,7 @@ const webpackConfig = merge(baseConfig, {
     ...(env !== 'development' ? [
       new CleanWebpackPlugin([
         'dist',
-        'types',
-        'lib'
+        'types'
       ], {
         root: path.resolve(__dirname, './')
       }),

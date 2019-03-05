@@ -1,5 +1,10 @@
 {
   "compilerOptions": {
+    "paths": {
+      "*": [
+        "types/*"
+      ]
+    },
     "baseUrl": ".",
     "strictNullChecks": true,
     "moduleResolution": "node",

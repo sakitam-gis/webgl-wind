@@ -87,7 +87,7 @@ class WindGL {
     numParticles: number|undefined,
   }) {
     // @ts-ignore
-    const { fadeOpacity, speedFactor, dropRate, dropRateBump, colorRamp, numParticles } = options;
+    const { fadeOpacity, speedFactor, dropRate, dropRateBump, colorRamp, numParticles } = options || {};
     this.gl = gl;
 
     this.fadeOpacity = fadeOpacity || 0.996; // how fast the particle trails fade on each frame

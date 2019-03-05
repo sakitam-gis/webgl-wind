@@ -9,7 +9,7 @@
     "noImplicitAny": true,
     "declaration": true,
     "allowSyntheticDefaultImports": true,
-    "outDir": "lib",
+    "outDir": "types",
     "module": "commonjs",
     "sourceMap": true,
     "rootDirs": [

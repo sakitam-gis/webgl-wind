@@ -19,7 +19,10 @@ module.exports = {
       '.web.tsx', '.web.ts', '.web.jsx', '.web.js',
       '.ts', '.tsx', '.js', '.jsx',
       '.json'
-    ]
+    ],
+    alias: {
+      'react-dom': '@hot-loader/react-dom' // https://github.com/gatsbyjs/gatsby/issues/11934
+    }
   },
   module: {
     rules: [
@@ -29,7 +32,8 @@ module.exports = {
         loader: 'babel-loader',
         include: [
           utils.resolve('packages'),
-          utils.resolve('node_modules/webpack-dev-server/client')
+          utils.resolve('website'),
+          // utils.resolve('node_modules/webpack-dev-server/client')
         ],
       },
       {
@@ -37,6 +41,7 @@ module.exports = {
         loader: 'ts-loader',
         include: [
           utils.resolve('packages'),
+          utils.resolve('website'),
         ]
       },
       {

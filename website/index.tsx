@@ -6,20 +6,6 @@ import routes from './routes/index';
 
 const env = process.env.NODE_ENV || 'development';
 
-interface NodeModule {
-  hot: any,
-  exports: any;
-  require: NodeRequireFunction;
-  id: string;
-  filename: string;
-  loaded: boolean;
-  parent: NodeModule | null;
-  children: NodeModule[];
-  paths: string[];
-}
-
-declare var module: NodeModule;
-
 const RootApp = () => {
   return (
     <Router>
@@ -40,8 +26,8 @@ if (env === 'development') {
       );
     };
     render(RootApp);
-    if (module.hot) {
-      module.hot.accept('./routes', () => {
+    if (module['hot']) {
+      module['hot'].accept('./routes', () => {
         render(RootApp);
       });
     }

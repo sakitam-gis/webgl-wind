@@ -12,18 +12,17 @@ const env = process.env.LIB_ENV;
 
 const webpackConfig = merge(baseConfig, {
   mode: env,
-  entry: {
-    app: utils.resolve('packages/core/src/index.ts')
-  },
+  entry: utils.resolve('packages/mapbox/src/index.ts'),
   devtool: 'source-map', // cheap-module-eval-source-map
   watch: env === 'development',
   output: {
-    path: utils.resolve('packages/core/'),
+    path: utils.resolve('packages/mapbox/'),
     filename: env === 'development' ? pkg.unpkg : utils.handleMinEsm(pkg.unpkg),
-    publicPath: utils.resolve('packages/core/'),
+    publicPath: utils.resolve('packages/mapbox/'),
     library: pkg.namespace,
     libraryTarget: 'umd2',
-    umdNamedDefine: true
+    umdNamedDefine: true,
+    libraryExport: 'default' // 默认导出
   },
   module: {
     rules: [
@@ -32,7 +31,7 @@ const webpackConfig = merge(baseConfig, {
         loader: 'tslint-loader',
         enforce: 'pre',
         include: [
-          utils.resolve('packages/core/src')
+          utils.resolve('packages/mapbox/src')
         ],
         options: {
           emitWarning: false
@@ -41,11 +40,10 @@ const webpackConfig = merge(baseConfig, {
     ]
   },
   plugins: [
-    ...(env === 'development' ? [
+    ...(env !== 'development' ? [
       new CleanWebpackPlugin([
         'dist',
-        'types',
-        'lib'
+        'types'
       ], {
         root: path.resolve(__dirname, './')
       }),
