@@ -1,10 +1,11 @@
-import * as mapbox from 'mapbox-gl';
+// @ts-ignore
+import mapboxgl from 'mapbox-gl';
 import WindGL from '../../core/src/index';
 declare class MapBoxWindGL {
     id: string;
     type: string;
     renderingMode: string;
-    map: mapbox.Map | null;
+    map: mapboxgl.Map | null;
     wind: WindGL | null;
     options: any | null;
     constructor(id: string, options?: object);

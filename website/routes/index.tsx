@@ -4,6 +4,7 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 import Index from '../pages/Index';
 import Native from '../pages/Native';
 import MapBox from '../pages/MapBox';
+import Openlayers from '../pages/Openlayers';
 
 const mainRouter = [
   {
@@ -28,6 +29,14 @@ const mainRouter = [
     route: {
       path: '/mapbox',
       component: MapBox,
+    },
+  },
+  {
+    name: 'openlayers',
+    key: 'openlayers',
+    route: {
+      path: '/openlayers',
+      component: Openlayers,
     },
   },
 ];

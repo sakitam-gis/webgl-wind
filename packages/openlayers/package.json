@@ -1,0 +1,47 @@
+{
+  "name": "@sakitam-gis/ol-windgl",
+  "version": "0.0.1",
+  "description": "Wind power visualization with openlayers",
+  "author": "sakitam-fdd <smilefdd@gmail.com>",
+  "homepage": "https://github.com/sakitam-gis/webgl-wind/packages/openlayers",
+  "private": false,
+  "main": "dist/ol-windgl.js",
+  "module": "dist/ol-windgl.js",
+  "unpkg": "dist/ol-windgl.js",
+  "namespace": "OlWindGL",
+  "types": "types/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sakitam-gis/webgl-wind/packages/openlayers"
+  },
+  "bugs": {
+    "url": "https://github.com/sakitam-gis/webgl-wind/issues"
+  },
+  "keywords": [
+    "webgl",
+    "canvas",
+    "es6",
+    "javascript",
+    "typescript",
+    "wind",
+    "openlayers"
+  ],
+  "scripts": {
+    "dev": "cross-env LIB_ENV=development webpack --config webpack.config.js",
+    "build": "cross-env LIB_ENV=production webpack --config webpack.config.js"
+  },
+  "dependencies": {
+    "@sakitam-gis/webgl-wind": "^0.0.1"
+  },
+  "peerDependencies": {
+    "ol": "^5.3.1"
+  },
+  "devDependencies": {
+    "ol": "^5.3.1"
+  },
+  "engines": {
+    "node": ">= 4.0.0",
+    "npm": ">= 3.0.0"
+  },
+  "license": "MIT"
+}

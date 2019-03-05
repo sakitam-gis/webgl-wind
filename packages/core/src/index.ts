@@ -243,6 +243,9 @@ class WindGL {
     gl.uniform1f(program.u_particles_res, this.particleStateResolution);
     gl.uniform2f(program.u_wind_min, this.windData.uMin, this.windData.vMin);
     gl.uniform2f(program.u_wind_max, this.windData.uMax, this.windData.vMax);
+    // 1、要修改的uniform属性的位置的对象
+    // 2、是否逆转矩阵
+    // 3、矩阵
     gl.uniformMatrix4fv(program.u_matrix, false, this.matrix);
     // gl.uniform4fv(program.u_bbox, this.bbox);
     gl.drawArrays(gl.POINTS, 0, this._numParticles);

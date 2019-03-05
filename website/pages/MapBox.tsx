@@ -45,7 +45,7 @@ class MapBox extends React.Component {
       container: this.container, // container id
       style: 'mapbox://styles/mapbox/dark-v9', // stylesheet location
       center: [-74.50, 40], // starting position [lng, lat]
-      zoom: 9 // starting zoom
+      zoom: 2 // starting zoom
     });
 
     this.map.on('load', () => {

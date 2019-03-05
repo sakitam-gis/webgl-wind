@@ -1,15 +1,22 @@
 [
   {
-    "imgSrc": "./static/images/building.gif",
+    "imgSrc": "./static/images/native.jpg",
     "link": "/native",
     "chart_name": "native",
     "chart_author": "sakitam-fdd",
     "chart_time": "2019.03.04"
   },
   {
-    "imgSrc": "./static/images/building.gif",
+    "imgSrc": "./static/images/mapbox.jpg",
     "link": "/mapbox",
     "chart_name": "mapbox",
+    "chart_author": "sakitam-fdd",
+    "chart_time": "2019.03.05"
+  },
+  {
+    "imgSrc": "./static/images/mapbox.jpg",
+    "link": "/openlayers",
+    "chart_name": "openlayers",
     "chart_author": "sakitam-fdd",
     "chart_time": "2019.03.05"
   }
