@@ -12,9 +12,7 @@ const env = process.env.LIB_ENV;
 
 const webpackConfig = merge(baseConfig, {
   mode: env,
-  entry: {
-    app: utils.resolve('packages/core/src/index.ts')
-  },
+  entry: utils.resolve('packages/core/src/index.ts'),
   devtool: 'source-map', // cheap-module-eval-source-map
   watch: env === 'development',
   output: {
@@ -23,7 +21,8 @@ const webpackConfig = merge(baseConfig, {
     publicPath: utils.resolve('packages/core/'),
     library: pkg.namespace,
     libraryTarget: 'umd2',
-    umdNamedDefine: true
+    umdNamedDefine: true,
+    libraryExport: 'default' // 默认导出
   },
   module: {
     rules: [
@@ -41,7 +40,7 @@ const webpackConfig = merge(baseConfig, {
     ]
   },
   plugins: [
-    ...(env === 'development' ? [
+    ...(env !== 'development' ? [
       new CleanWebpackPlugin([
         'dist',
         'types',
