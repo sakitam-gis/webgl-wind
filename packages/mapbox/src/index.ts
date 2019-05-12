@@ -1,23 +1,19 @@
-// @ts-ignore
-import mapboxgl from 'mapbox-gl';
 import WindGL from '../../core/src/index';
 
 const uuid = () => {
+  // tslint:disable-next-line:function-name
   function b(a?: number) {
     // @ts-ignore
-    return a ? (a ^ Math.random() * 16 >> a / 4).toString(16) : ([1e7] + -[1e3] + -4e3 + -8e3 + -1e11).replace(/[018]/g, b)
+    return a ? (a ^ Math.random() * 16 >> a / 4).toString(16) : ([1e7] + -[1e3] + -4e3 + -8e3 + -1e11).replace(/[018]/g, b);
   }
-  return b()
+  return b();
 };
 
 class MapBoxWindGL {
   public id: string;
   public type: string;
   public renderingMode: string;
-
-  // @ts-ignore
-  public map: mapboxgl.Map|null;
-
+  public map: any;
   public wind: WindGL|null;
   public options: any|null;
   constructor(id: string, options?: object) {
@@ -47,12 +43,13 @@ class MapBoxWindGL {
   }
 
   resize () {
-    this.wind && this.wind.resize()
+    if (this.wind) {
+      this.wind.resize();
+    }
   }
 
   // @ts-ignore
   onAdd(map, gl: WebGLRenderingContext) {
-    console.log(map, gl);
     this.map = map;
 
     this.wind = new WindGL(gl, this.options);
@@ -61,16 +58,29 @@ class MapBoxWindGL {
   }
 
   onRemove() {
-    this.map && this.map.off('resize', this.resize);
+    if (this.map) {
+      this.map.off('resize', this.resize);
+    }
     delete this.map;
   }
 
   // @ts-ignore
-  render(gl: WebGLRenderingContext, matrix: any) {
+  render(gl: WebGLRenderingContext, matrix: number[]) {
     if (this.wind) {
-      this.wind.render(matrix);
+      // from https://github.com/astrosat/windgl/blob/3ad0ae3bdd/src/layer.js#L157
+      const bounds = this.map.getBounds();
+      const eastIter = Math.max(0, Math.ceil((bounds.getEast() - 180) / 360));
+      const westIter = Math.max(0, Math.ceil((bounds.getWest() + 180) / -360));
+      this.wind.render(this.map, matrix, 0);
+      // tslint:disable-next-line:no-increment-decrement
+      for (let i = 1; i <= eastIter; i++) {
+        this.wind.render(this.map, matrix, i);
+      }
+      // tslint:disable-next-line:no-increment-decrement
+      for (let i = 1; i <= westIter; i++) {
+        this.wind.render(this.map, matrix, -i);
+      }
     }
-    this.map.triggerRepaint()
   }
 
   /**
@@ -87,8 +97,17 @@ class MapBoxWindGL {
     uMax: number;
     vMin: number;
     vMax: number;
-  }, image: any) {
-    this.wind && this.wind.setWind(data, image);
+  },      image: any) {
+    if (this.wind) {
+      this.wind.setWind(data, image);
+    }
+  }
+
+  setOptions(options = {}) {
+    this.options = Object.assign(this.options, options);
+    if (this.wind) {
+      this.wind.setOptions(this.options);
+    }
   }
 }
 

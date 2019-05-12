@@ -1,4 +1,4 @@
-import '../assets/style/header.scss';
+import '../assets/style/header.less';
 import * as React from 'react';
 
 const github = require('../assets/images/github.png');

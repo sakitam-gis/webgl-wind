@@ -6,6 +6,7 @@ uniform sampler2D u_particles;
 uniform float u_particles_res;
 
 uniform mat4 u_matrix;
+uniform float u_dateline_offset;
 //uniform vec4 u_bbox;
 
 varying vec2 v_particle_pos;
@@ -28,5 +29,6 @@ void main() {
 //    float y = 1.0 - (degrees(log((1.0 + s) / (1.0 - s))) / 360.0 + 1.0) / 2.0;
 
     gl_PointSize = 1.0;
-    gl_Position = u_matrix * vec4(v_particle_pos.xy, 0, 1);
+//    gl_Position = u_matrix * vec4(world_coords_mercator, 0, 1);
+  gl_Position = u_matrix * vec4(v_particle_pos.xy + vec2(u_dateline_offset, 0), 0, 1);
 }

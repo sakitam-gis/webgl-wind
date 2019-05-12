@@ -1,4 +1,4 @@
-import '../assets/style/native.scss';
+import '../assets/style/native.less';
 import * as React from 'react';
 
 // @ts-ignore

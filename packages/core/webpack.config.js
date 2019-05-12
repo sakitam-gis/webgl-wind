@@ -41,12 +41,6 @@ const webpackConfig = merge(baseConfig, {
   },
   plugins: [
     ...(env !== 'development' ? [
-      new CleanWebpackPlugin([
-        'dist',
-        'types'
-      ], {
-        root: path.resolve(__dirname, './')
-      }),
       new ParallelUglifyPlugin({
         // cacheDir: path.join(__dirname, './cache/'),
         sourceMap: true,

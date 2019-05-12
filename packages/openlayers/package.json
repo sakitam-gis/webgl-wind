@@ -28,7 +28,7 @@
   ],
   "scripts": {
     "dev": "cross-env LIB_ENV=development webpack --config webpack.config.js",
-    "build": "cross-env LIB_ENV=production webpack --config webpack.config.js"
+    "build": "cross-env LIB_ENV=development webpack --config webpack.config.js"
   },
   "dependencies": {
     "@sakitam-gis/webgl-wind": "^0.0.1"

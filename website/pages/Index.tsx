@@ -1,4 +1,4 @@
-import '../assets/style/index.scss';
+import '../assets/style/index.less';
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import Header from './Header';

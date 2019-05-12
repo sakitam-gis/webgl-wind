@@ -25,9 +25,9 @@ function getColorRamp(colors: {}) {
   canvas.width = 256;
   canvas.height = 1;
   const gradient = ctx.createLinearGradient(0, 0, 256, 0);
-  for (const stop in colors) { // eslint-disable-line
+  Object.keys(colors).forEach((stop: number | string) => {
     gradient.addColorStop(+stop, colors[stop]);
-  }
+  });
   ctx.fillStyle = gradient;
   ctx.fillRect(0, 0, 256, 1);
   return new Uint8Array(ctx.getImageData(0, 0, 256, 1).data);
@@ -44,19 +44,55 @@ const defaultRampColors = {
   1.0: '#d53e4f',
 };
 
+// tslint:disable-next-line:class-name
+interface optionsTypes {
+  fadeOpacity?: number;
+  speedFactor?: number;
+  dropRate?: number;
+  dropRateBump?: number;
+  colorRamp?: {};
+  numParticles?: number;
+  composite?: boolean;
+}
+
 class WindGL {
-  matrix: any;
-  gl: WebGLRenderingContext;
-  fadeOpacity: number;
-  speedFactor: number;
-  dropRate: number;
-  dropRateBump: number;
-  drawProgram: any;
-  screenProgram: any;
-  updateProgram: any;
-  quadBuffer: WebGLBuffer|null;
-  framebuffer: WebGLFramebuffer|null;
-  windData: {
+
+  set numParticles(numParticles) {
+    const gl = this.gl;
+    // we create a square texture where each pixel will hold a particle position encoded as RGBA
+    const particleRes = Math.ceil(Math.sqrt(numParticles));
+    this.particleStateResolution = particleRes;
+    this._numParticles = particleRes * particleRes;
+
+    const particleState = new Uint8Array(this._numParticles * 4);
+    // tslint:disable-next-line:no-increment-decrement
+    for (let i = 0; i < particleState.length; i++) {
+      // randomize the initial particle positions
+      particleState[i] = Math.floor(Math.random() * 256);
+    }
+    // textures to hold the particle state for the current and the next frame
+    this.particleStateTexture0 = createTexture(
+      gl, gl.NEAREST, particleState, particleRes, particleRes,
+    );
+    this.particleStateTexture1 = createTexture(
+      gl, gl.NEAREST, particleState, particleRes, particleRes,
+    );
+    const particleIndices = new Float32Array(this._numParticles);
+    // tslint:disable-next-line:no-increment-decrement
+    for (let i = 0; i < this._numParticles; i++) { particleIndices[i] = i; }
+    this.particleIndexBuffer = createBuffer(gl, particleIndices);
+  }
+
+  get numParticles() {
+    return this._numParticles;
+  }
+  public matrix: any;
+  public gl: WebGLRenderingContext;
+  public fadeOpacity: number;
+  public speedFactor: number;
+  public dropRate: number;
+  public dropRateBump: number;
+  public windData: {
     source: string;
     date: Date;
     width: number;
@@ -66,30 +102,27 @@ class WindGL {
     vMin: number;
     vMax: number;
   };
-  screenTexture: WebGLTexture|null;
-  colorRampTexture: WebGLTexture|null;
-  backgroundTexture: WebGLTexture|null;
+  public _numParticles: number;
+  public options: optionsTypes;
+  private drawProgram: any;
+  private screenProgram: any;
+  private updateProgram: any;
+  private quadBuffer: WebGLBuffer|null;
+  private framebuffer: WebGLFramebuffer|null;
 
-  _numParticles: number;
-  particleStateResolution: number;
+  private screenTexture: WebGLTexture|null;
+  private colorRampTexture: WebGLTexture|null;
+  private backgroundTexture: WebGLTexture|null;
+  private particleStateResolution: number;
+  private particleIndexBuffer: WebGLBuffer|null;
+  private particleStateTexture1: WebGLTexture|null;
+  private particleStateTexture0: WebGLTexture|null;
 
-  particleIndexBuffer: WebGLBuffer|null;
-  particleStateTexture1: WebGLTexture|null;
-  particleStateTexture0: WebGLTexture|null;
-
-  windTexture: WebGLTexture|null;
-  constructor(gl: WebGLRenderingContext, options?: {
-    fadeOpacity: number|undefined,
-    speedFactor: number|undefined,
-    dropRate: number|undefined,
-    dropRateBump: number|undefined,
-    colorRamp: number|undefined,
-    numParticles: number|undefined,
-  }) {
-    // @ts-ignore
-    const { fadeOpacity, speedFactor, dropRate, dropRateBump, colorRamp, numParticles } = options || {};
+  private windTexture: WebGLTexture|null;
+  constructor(gl: WebGLRenderingContext, options: optionsTypes) {
+    const { fadeOpacity, speedFactor, dropRate, dropRateBump, colorRamp, numParticles } = options;
+    this.options = options;
     this.gl = gl;
-
     this.fadeOpacity = fadeOpacity || 0.996; // how fast the particle trails fade on each frame
     this.speedFactor = speedFactor || 0.25; // how fast the particles move
     this.dropRate = dropRate || 0.003; // how often the particles move to a random place
@@ -125,8 +158,19 @@ class WindGL {
     this.resize();
   }
 
+  setOptions(options: optionsTypes) {
+    const { fadeOpacity, speedFactor, dropRate, dropRateBump, colorRamp, numParticles } = options;
+    this.fadeOpacity = fadeOpacity || 0.996; // how fast the particle trails fade on each frame
+    this.speedFactor = speedFactor || 0.25; // how fast the particles move
+    this.dropRate = dropRate || 0.003; // how often the particles move to a random place
+    // drop rate increase relative to individual particle speed
+    this.dropRateBump = dropRateBump || 0.01;
+    this.setColorRamp(colorRamp || defaultRampColors);
+    this.numParticles = numParticles || 65536;
+  }
+
   resize() {
-    const { gl } = this;
+    const gl = this.gl;
     const emptyPixels = new Uint8Array(gl.canvas.width * gl.canvas.height * 4);
     // screen textures to hold the drawn screen for the previous and the current frame
     this.backgroundTexture = createTexture(
@@ -144,34 +188,6 @@ class WindGL {
     );
   }
 
-  set numParticles(numParticles) {
-    const { gl } = this;
-    // we create a square texture where each pixel will hold a particle position encoded as RGBA
-    const particleRes = Math.ceil(Math.sqrt(numParticles));
-    this.particleStateResolution = particleRes;
-    this._numParticles = particleRes * particleRes;
-
-    const particleState = new Uint8Array(this._numParticles * 4);
-    for (let i = 0; i < particleState.length; i++) {
-      // randomize the initial particle positions
-      particleState[i] = Math.floor(Math.random() * 256);
-    }
-    // textures to hold the particle state for the current and the next frame
-    this.particleStateTexture0 = createTexture(
-      gl, gl.NEAREST, particleState, particleRes, particleRes,
-    );
-    this.particleStateTexture1 = createTexture(
-      gl, gl.NEAREST, particleState, particleRes, particleRes,
-    );
-    const particleIndices = new Float32Array(this._numParticles);
-    for (let i = 0; i < this._numParticles; i++) particleIndices[i] = i;
-    this.particleIndexBuffer = createBuffer(gl, particleIndices);
-  }
-
-  get numParticles() {
-    return this._numParticles;
-  }
-
   setWind(data: {
     source: string;
     date: Date;
@@ -181,14 +197,15 @@ class WindGL {
     uMax: number;
     vMin: number;
     vMax: number;
-  }, image: any) {
+  },      image: any) {
     this.windData = data;
     this.windTexture = createTexture(this.gl, this.gl.LINEAR, image);
   }
 
-  render(matrix: any) { // eslint-disable-line
-    const { gl, windData } = this;
-    if (!gl || !windData) return;
+  render(map: any, matrix: number[], dateLineOffset: number) {
+    const gl = this.gl;
+    const windData = this.windData;
+    if (!gl || !windData) { return; }
     this.matrix = matrix;
     const blendingEnabled = gl.isEnabled(gl.BLEND);
     gl.disable(gl.BLEND);
@@ -196,23 +213,40 @@ class WindGL {
     gl.disable(gl.STENCIL_TEST);
     bindTexture(gl, this.windTexture, 0);
     bindTexture(gl, this.particleStateTexture0, 1);
-    this.drawScreen();
-    this.updateParticles();
-    if (blendingEnabled) gl.enable(gl.BLEND);
+    this.drawScreen(matrix, dateLineOffset);
+    this.updateParticles(map);
+    if (blendingEnabled) { gl.enable(gl.BLEND); }
   }
 
-  drawScreen() {
-    const { gl } = this;
+  drawScreen(matrix: number[], dateLineOffset: number) {
+    const gl = this.gl;
+    const { composite } = this.options;
     // draw the screen into a temporary framebuffer to retain it as the background on the next frame
     bindFramebuffer(gl, this.framebuffer, this.screenTexture);
     gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+
     this.drawTexture(this.backgroundTexture, this.fadeOpacity);
-    this.drawParticles();
+
+    if (composite) {
+      this.drawParticles(matrix, dateLineOffset);
+    }
+
     bindFramebuffer(gl, null);
-    // enable blending to support drawing on top of an existing background (e.g. a map)
+
     gl.enable(gl.BLEND);
+
+    this.drawParticles(matrix, dateLineOffset);
+
+    // 非预乘阿尔法
     gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+    // 预乘阿尔法通道
+    // gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+    if (!composite) {
+      this.drawParticles(matrix, dateLineOffset);
+    }
+
     this.drawTexture(this.screenTexture, 1.0);
+
     gl.disable(gl.BLEND);
     // save the current screen as the background for the next frame
     const temp = this.backgroundTexture;
@@ -220,8 +254,8 @@ class WindGL {
     this.screenTexture = temp;
   }
 
-  drawTexture(texture:WebGLTexture|null, opacity:number) {
-    const { gl } = this;
+  drawTexture(texture: WebGLTexture | null, opacity: number) {
+    const gl = this.gl;
     const program = this.screenProgram;
     gl.useProgram(program.program);
     bindAttribute(gl, this.quadBuffer, program.a_pos, 2);
@@ -231,8 +265,8 @@ class WindGL {
     gl.drawArrays(gl.TRIANGLES, 0, 6);
   }
 
-  drawParticles() {
-    const { gl } = this;
+  drawParticles(matrix: number[], dateLineOffset: number) {
+    const gl = this.gl;
     const program = this.drawProgram;
     gl.useProgram(program.program);
     bindAttribute(gl, this.particleIndexBuffer, program.a_index, 1);
@@ -243,21 +277,24 @@ class WindGL {
     gl.uniform1f(program.u_particles_res, this.particleStateResolution);
     gl.uniform2f(program.u_wind_min, this.windData.uMin, this.windData.vMin);
     gl.uniform2f(program.u_wind_max, this.windData.uMax, this.windData.vMax);
+    gl.uniform1f(program.u_dateline_offset, dateLineOffset);
     // 1、要修改的uniform属性的位置的对象
     // 2、是否逆转矩阵
     // 3、矩阵
-    gl.uniformMatrix4fv(program.u_matrix, false, this.matrix);
+    gl.uniformMatrix4fv(program.u_matrix, false, matrix);
     // gl.uniform4fv(program.u_bbox, this.bbox);
     gl.drawArrays(gl.POINTS, 0, this._numParticles);
   }
 
-  updateParticles() {
-    const { gl } = this;
+  updateParticles(map: any) {
+    const gl = this.gl;
     bindFramebuffer(gl, this.framebuffer, this.particleStateTexture1);
     gl.viewport(0, 0, this.particleStateResolution, this.particleStateResolution);
     const program = this.updateProgram;
     gl.useProgram(program.program);
+
     bindAttribute(gl, this.quadBuffer, program.a_pos, 2);
+
     gl.uniform1i(program.u_wind, 0);
     gl.uniform1i(program.u_particles, 1);
     gl.uniform1f(program.u_rand_seed, Math.random());
@@ -273,6 +310,10 @@ class WindGL {
     const temp = this.particleStateTexture0;
     this.particleStateTexture0 = this.particleStateTexture1;
     this.particleStateTexture1 = temp;
+
+    if (map) {
+      map.triggerRepaint();
+    }
   }
 }
 

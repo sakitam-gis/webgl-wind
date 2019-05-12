@@ -9,19 +9,8 @@ class OlWindGL {
 
   /**
    * set wind data
-   * @param data
-   * @param image
    */
-  setWind(data: {
-    source: string;
-    date: Date;
-    width: number;
-    height: number;
-    uMin: number;
-    uMax: number;
-    vMin: number;
-    vMax: number;
-  }, image: any) {
+  setWind() {
     // this.wind && this.wind.setWind(data, image);
   }
 }

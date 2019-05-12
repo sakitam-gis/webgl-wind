@@ -1,4 +1,5 @@
-import '../assets/style/art.scss';
+import '../assets/style/art.less';
+import 'mapbox-gl/dist/mapbox-gl.css';
 import * as React from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import Index from '../pages/Index';
@@ -45,7 +46,7 @@ const routes = (
   <Switch>
     // @ts-ignore
     {mainRouter.map(route => <Route key={route.key} {...route.route} />)}
-    <Redirect to="./index" />
+    <Redirect to="./mapbox" />
   </Switch>
 );
 

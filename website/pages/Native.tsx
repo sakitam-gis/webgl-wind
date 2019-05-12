@@ -1,4 +1,4 @@
-import '../assets/style/native.scss';
+import '../assets/style/native.less';
 import * as React from 'react';
 import { getJSON } from '../helper';
 import { Props, Context } from '../interface/common';
@@ -60,11 +60,12 @@ class Native extends React.Component {
       // 'preserveDrawingBuffer': true
     });
 
-    this.wind = new WindGL(context);
+    this.wind = new WindGL(context, {});
 
     that.creatGuiControl();
 
     function draw () {
+      // @ts-ignore
       that.wind && that.wind.render(JSON.parse("[3770.804809734272,0,0,0,0,-14685.487291460046,0,0,0,0,-4908.288037791965,-4895.162430486682,-2994.5333865497773,5668.44799568952,739.480171471856,739.5]"))
       requestAnimationFrame(draw);
     }

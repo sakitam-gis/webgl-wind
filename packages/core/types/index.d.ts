@@ -1,15 +1,20 @@
+interface optionsTypes {
+    fadeOpacity?: number;
+    speedFactor?: number;
+    dropRate?: number;
+    dropRateBump?: number;
+    colorRamp?: {};
+    numParticles?: number;
+    composite?: boolean;
+}
 declare class WindGL {
+    numParticles: any;
     matrix: any;
     gl: WebGLRenderingContext;
     fadeOpacity: number;
     speedFactor: number;
     dropRate: number;
     dropRateBump: number;
-    drawProgram: any;
-    screenProgram: any;
-    updateProgram: any;
-    quadBuffer: WebGLBuffer | null;
-    framebuffer: WebGLFramebuffer | null;
     windData: {
         source: string;
         date: Date;
@@ -20,26 +25,25 @@ declare class WindGL {
         vMin: number;
         vMax: number;
     };
-    screenTexture: WebGLTexture | null;
-    colorRampTexture: WebGLTexture | null;
-    backgroundTexture: WebGLTexture | null;
     _numParticles: number;
-    particleStateResolution: number;
-    particleIndexBuffer: WebGLBuffer | null;
-    particleStateTexture1: WebGLTexture | null;
-    particleStateTexture0: WebGLTexture | null;
-    windTexture: WebGLTexture | null;
-    constructor(gl: WebGLRenderingContext, options?: {
-        fadeOpacity: number | undefined;
-        speedFactor: number | undefined;
-        dropRate: number | undefined;
-        dropRateBump: number | undefined;
-        colorRamp: number | undefined;
-        numParticles: number | undefined;
-    });
+    options: optionsTypes;
+    private drawProgram;
+    private screenProgram;
+    private updateProgram;
+    private quadBuffer;
+    private framebuffer;
+    private screenTexture;
+    private colorRampTexture;
+    private backgroundTexture;
+    private particleStateResolution;
+    private particleIndexBuffer;
+    private particleStateTexture1;
+    private particleStateTexture0;
+    private windTexture;
+    constructor(gl: WebGLRenderingContext, options: optionsTypes);
+    setOptions(options: optionsTypes): void;
     resize(): void;
     setColorRamp(colors: object): void;
-    numParticles: any;
     setWind(data: {
         source: string;
         date: Date;
@@ -50,10 +54,10 @@ declare class WindGL {
         vMin: number;
         vMax: number;
     }, image: any): void;
-    render(matrix: any): void;
-    drawScreen(): void;
+    render(map: any, matrix: number[], dateLineOffset: number): void;
+    drawScreen(matrix: number[], dateLineOffset: number): void;
     drawTexture(texture: WebGLTexture | null, opacity: number): void;
-    drawParticles(): void;
-    updateParticles(): void;
+    drawParticles(matrix: number[], dateLineOffset: number): void;
+    updateParticles(map: any): void;
 }
 export default WindGL;
